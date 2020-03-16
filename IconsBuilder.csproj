@@ -50,6 +50,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ExileCore">
+      <HintPath>..\..\PoEHelper\ExileCore.dll</HintPath>
+    </Reference>
     <Reference Include="JM.LinqFaster, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\..\ExileApi\packages\LinqFaster.1.0.0\lib\net461\JM.LinqFaster.dll</HintPath>
       <Private>False</Private>
@@ -95,13 +98,6 @@
     <Compile Include="PortalIcon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShrineIcon.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\ExileApi\Core\Core.csproj">
-      <Project>{5539d732-34a7-44ab-9e28-116c3429b12a}</Project>
-      <Name>Core</Name>
-      <Private>False</Private>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
