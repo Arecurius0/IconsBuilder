@@ -25,6 +25,8 @@ namespace IconsBuilder
         }
         public void Update(Entity entity, IconsBuilderSettings settings, Dictionary<string, Size2> modIcons)
         {
+            Show = () => Entity.IsAlive;
+
             MainTexture = new HudTexture("Icons.png");
             if (!_HasIngameIcon) MainTexture = new HudTexture("Icons.png");
 
@@ -58,7 +60,7 @@ namespace IconsBuilder
                 if (entity.Path.StartsWith(pathstring + "BloodBag", StringComparison.Ordinal))
                 {
                     MainTexture.UV = SpriteHelper.GetUV(MapIconsIndex.RedFlag);
-                    Text = "Avoid";
+                    Text = settings.DeliriumText.Value? "Avoid" : ""; 
                 }
                 else if(entity.Path.StartsWith(pathstring + "EggFodder", StringComparison.Ordinal))
                 {
@@ -77,10 +79,6 @@ namespace IconsBuilder
                 MainTexture.Size = settings.SizeEntityProximityMonsterIcon;
                 Hidden = () => false;
                 
-                Show = () =>
-                {
-                    return Entity.IsAlive;
-                };
                 Priority = IconPriority.Medium;
                 return;
             }

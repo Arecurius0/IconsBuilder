@@ -44,6 +44,8 @@ namespace IconsBuilder
         public RangeNode<int> MultiThreadingWhenEntityMoreThan { get; set; } = new RangeNode<int>(10, 1, 200);
         public ToggleNode HidePlayers { get; set; } = new ToggleNode(false);
         public ToggleNode HideMinions { get; set; } = new ToggleNode(false);
+        public ToggleNode DeliriumText { get; set; } = new ToggleNode(false);
         public ToggleNode Enable { get; set; } = new ToggleNode(true);
+        
     }
 }
