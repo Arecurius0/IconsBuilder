@@ -35,7 +35,8 @@ namespace IconsBuilder
             "Metadata/Chests/DelveChests/DelveAzuriteVeinEncounter",
             "Metadata/Chests/DelveChests/DelveAzuriteVeinEncounterNoDrops",
             //delirium Ignores
-            "Metadata/Monsters/InvisibleFire/InvisibleFireAfflictionCorpseDegen"
+            "Metadata/Monsters/InvisibleFire/InvisibleFireAfflictionCorpseDegen",
+            "Metadata/Monsters/InvisibleFire/InvisibleFireAfflictionDemonColdDegenUnique"
         };
 
         private readonly Dictionary<string, Size2> modIcons = new Dictionary<string, Size2>();
@@ -146,7 +147,6 @@ namespace IconsBuilder
         private bool SkipEntity(Entity entity)
         {
             if (entity.Type == EntityType.Daemon) return true;
-            if (entity.Type == EntityType.Monster && entity.IsHidden && Settings.HideBurriedMonsters.Value) return true;
             if (ignoreEntites.AnyF(x => entity.Path.Contains(x))) return true;
             return false;
         }

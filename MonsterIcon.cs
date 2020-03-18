@@ -25,6 +25,10 @@ namespace IconsBuilder
         public void Update(Entity entity, IconsBuilderSettings settings, Dictionary<string, Size2> modIcons)
         {
             Show = () => entity.IsAlive;
+            if(entity.IsHidden && settings.HideBurriedMonsters)
+            {
+                Show = () => !entity.IsHidden && entity.IsAlive;
+            }
             ID = entity.Id;
 
             if (!_HasIngameIcon) MainTexture = new HudTexture("Icons.png");
