@@ -33,7 +33,9 @@ namespace IconsBuilder
             "Metadata/Monsters/Frog/FrogGod/SilverOrbFromMonsters",
             "Metadata/Terrain/Labyrinth/Objects/Puzzle_Parts/TimerGears",
             "Metadata/Chests/DelveChests/DelveAzuriteVeinEncounter",
-            "Metadata/Chests/DelveChests/DelveAzuriteVeinEncounterNoDrops"
+            "Metadata/Chests/DelveChests/DelveAzuriteVeinEncounterNoDrops",
+            //delirium Ignores
+            "Metadata/Monsters/InvisibleFire/InvisibleFireAfflictionCorpseDegen"
         };
 
         private readonly Dictionary<string, Size2> modIcons = new Dictionary<string, Size2>();
