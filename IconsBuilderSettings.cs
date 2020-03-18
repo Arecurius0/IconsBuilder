@@ -6,6 +6,7 @@ namespace IconsBuilder
 {
     public class IconsBuilderSettings : ISettings
     {
+
         [Menu("Default size")]
         public float SizeDefaultIcon { get; set; } = new RangeNode<int>(16, 1, 50);
         [Menu("Size NPC icon")]
@@ -45,6 +46,7 @@ namespace IconsBuilder
         public ToggleNode HidePlayers { get; set; } = new ToggleNode(false);
         public ToggleNode HideMinions { get; set; } = new ToggleNode(false);
         public ToggleNode DeliriumText { get; set; } = new ToggleNode(false);
+        public ToggleNode HideBurriedMonsters { get; set; } = new ToggleNode(false);
         public ToggleNode Enable { get; set; } = new ToggleNode(true);
         
     }
