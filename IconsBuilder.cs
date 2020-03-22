@@ -17,6 +17,8 @@ namespace IconsBuilder
     public class IconsBuilder : BaseSettingsPlugin<IconsBuilderSettings>
     {
         private const string ALERT_CONFIG = "config\\new_mod_alerts.txt";
+        private const string IGNORE_FILE = "IgnoredEntities.txt";
+        private List<string> IgnoredSum;
 
         private readonly EntityType[] Chests =
         {
@@ -36,7 +38,8 @@ namespace IconsBuilder
             "Metadata/Chests/DelveChests/DelveAzuriteVeinEncounterNoDrops",
             //delirium Ignores
             "Metadata/Monsters/InvisibleFire/InvisibleFireAfflictionCorpseDegen",
-            "Metadata/Monsters/InvisibleFire/InvisibleFireAfflictionDemonColdDegenUnique"
+            "Metadata/Monsters/InvisibleFire/InvisibleFireAfflictionDemonColdDegenUnique",
+            "Metadata/Monsters/AtlasExiles/CrusaderInfluenceMonsters/CrusaderArcaneRune"
         };
 
         private readonly Dictionary<string, Size2> modIcons = new Dictionary<string, Size2>();
@@ -60,6 +63,44 @@ namespace IconsBuilder
                 var sz = s[2].Trim().Split(',');
                 modIcons[s[0]] = new Size2(int.Parse(sz[0]), int.Parse(sz[1]));
             }
+        }
+        private void CreateIgnoreFile()
+        {
+            var path = $"{DirectoryFullName}\\{IGNORE_FILE}";
+            if (File.Exists(path)) return;
+            var defaultConfig =
+            #region default Config
+                "#default ignores\n" +
+                "Metadata/Monsters/Frog/FrogGod/SilverPool\n" +
+                "Metadata/MiscellaneousObjects/WorldItem\n" +
+                "Metadata/Pet/Weta/Basic\n" +
+                "Metadata/Monsters/Daemon/SilverPoolChillDaemon\n" +
+                "Metadata/Monsters/Daemon\n" +
+                "Metadata/Monsters/Frog/FrogGod/SilverOrbFromMonsters\n" +
+                "Metadata/Terrain/Labyrinth/Objects/Puzzle_Parts/TimerGears\n" +
+                "Metadata/Chests/DelveChests/DelveAzuriteVeinEncounter\n" +
+                "Metadata/Chests/DelveChests/DelveAzuriteVeinEncounterNoDrops\n" +
+                "#Delirium Ignores\n" +
+                "Metadata/Monsters/InvisibleFire/InvisibleFireAfflictionCorpseDegen\n" +
+                "Metadata/Monsters/InvisibleFire/InvisibleFireAfflictionDemonColdDegenUnique\n" +
+                "Metadata/Monsters/AtlasExiles/CrusaderInfluenceMonsters/CrusaderArcaneRune";
+            #endregion
+            using (var streamWriter = new StreamWriter(path, true))
+            {
+                streamWriter.Write(defaultConfig);
+                streamWriter.Close();
+            }
+        }
+        private void ReadIgnoreFile()
+        {
+            var path = $"{DirectoryFullName}\\{IGNORE_FILE}";
+            if (File.Exists(path))
+            {
+                var text = File.ReadAllLines(path).Where(line => !string.IsNullOrWhiteSpace(line) && !line.StartsWith("#")).ToList();
+                IgnoredSum = ignoreEntites.Concat(text).ToList();
+            }
+            else
+                CreateIgnoreFile();
         }
 
         public override void OnLoad()
@@ -95,6 +136,7 @@ namespace IconsBuilder
         public override void AreaChange(AreaInstance area)
         {
             Core.MainRunner.Run(new Coroutine(FixIcons(), this, "Fix map icons"));
+            ReadIgnoreFile();
         }
 
         public override bool Initialise()
@@ -110,6 +152,7 @@ namespace IconsBuilder
                     EntityAdded(entity);
                 }
             };
+            ReadIgnoreFile();
 
             return true;
         }
