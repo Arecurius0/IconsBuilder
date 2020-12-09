@@ -47,6 +47,10 @@ namespace IconsBuilder
         public ToggleNode HideMinions { get; set; } = new ToggleNode(false);
         public ToggleNode DeliriumText { get; set; } = new ToggleNode(false);
         public ToggleNode HideBurriedMonsters { get; set; } = new ToggleNode(false);
+        public ToggleNode ShowWhiteMonsterName { get; set; } = new ToggleNode(false);
+        public ToggleNode ShowMagicMonsterName { get; set; } = new ToggleNode(false);
+        public ToggleNode ShowRareMonsterName { get; set; } = new ToggleNode(false);
+        public ToggleNode ShowUniqueMonsterName { get; set; } = new ToggleNode(false);
         public ToggleNode Enable { get; set; } = new ToggleNode(true);
         
     }

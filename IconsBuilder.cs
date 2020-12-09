@@ -218,15 +218,16 @@ namespace IconsBuilder
             //Player
             if (entity.Type == EntityType.Player)
             {
+                var rendername = GameController.IngameState.Data.LocalPlayer.GetComponent<Render>()?.Name ?? null;
                 if (GameController.IngameState.Data.LocalPlayer.Address == entity.Address ||
-                    GameController.IngameState.Data.LocalPlayer.GetComponent<Render>().Name == entity.RenderName) return null;
+                    rendername == null || !(rendername == entity.RenderName)) return null;
 
                 if (!entity.IsValid) return null;
                 return new PlayerIcon(entity, GameController, Settings, modIcons);
             }
 
             //Chests
-            if (Chests.AnyF(x => x == entity.Type) && !entity.IsOpened)
+            if (Chests.AnyF(x => x == entity.Type) && !entity.IsOpened  && !entity.RenderName.Contains("Curio Display"))
                 return new ChestIcon(entity, GameController, Settings);
 
             //Area transition
@@ -241,13 +242,13 @@ namespace IconsBuilder
             {
                 //Mission marker
                 if (entity.Path.Equals("Metadata/MiscellaneousObjects/MissionMarker", StringComparison.Ordinal) ||
-                    entity.GetComponent<MinimapIcon>().Name.Equals("MissionTarget", StringComparison.Ordinal))
+                    (entity.HasComponent<MinimapIcon>() && entity.GetComponent<MinimapIcon>().Name.Equals("MissionTarget", StringComparison.Ordinal)))
                     return new MissionMarkerIcon(entity, GameController, Settings);
 
                 return new MiscIcon(entity, GameController, Settings);
             }
 
-            if (entity.HasComponent<MinimapIcon>() && entity.HasComponent<Targetable>())
+            if (entity.HasComponent<MinimapIcon>() && entity.HasComponent<Targetable>() && entity.League != LeagueType.Heist)
                 return new MiscIcon(entity, GameController, Settings);
 
             if (entity.Path.Contains("Metadata/Terrain/Leagues/Delve/Objects/EncounterControlObjects/AzuriteEncounterController"))

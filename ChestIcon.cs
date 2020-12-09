@@ -45,25 +45,32 @@ namespace IconsBuilder
                 CType = ChestType.Synthesis;
             else if (Entity.League == LeagueType.Legion)
                 CType = ChestType.Legion;
+            else if (Entity.League == LeagueType.Heist)
+                CType = ChestType.Heist;
             else
                 CType = ChestType.SmallChest;
 
             Show = () => !Entity.IsOpened;
 
-            if (!_HasIngameIcon)
-                MainTexture = new HudTexture {FileName = "sprites.png"};
-            else
+            if (CType != ChestType.Heist)
             {
-                MainTexture.Size = settings.SizeChestIcon;
-                Text = Entity.GetComponent<Render>()?.Name;
-                return;
+                if (!_HasIngameIcon)
+                {
+                    MainTexture = new HudTexture {FileName = "sprites.png"};
+                }
+                else
+                {
+                    MainTexture.Size = settings.SizeChestIcon;
+                    Text = Entity.GetComponent<Render>()?.Name ??  "";
+                    return;
+                }
             }
-
             switch (Rarity)
             {
                 case MonsterRarity.White:
                     MainTexture.Color = Color.White;
                     break;
+
                 case MonsterRarity.Magic:
                     MainTexture.Color = HudSkin.MagicColor;
                     break;
@@ -80,7 +87,7 @@ namespace IconsBuilder
                     MainTexture.Color = Color.Purple;
                     break;
             }
-
+            
             switch (CType)
             {
                 case ChestType.Breach:
@@ -351,6 +358,15 @@ namespace IconsBuilder
                     Text = Entity.Path.Replace("Metadata/Chests/Labyrinth/Labyrinth", "");
                     MainTexture.Color = Color.ForestGreen;
                     break;
+                case ChestType.Heist:
+                        //DebugWindow.LogMsg(Entity.Path + " [ChestType.Fossil]");
+                        //MainTexture.UV = SpriteHelper.GetUV(MyMapIconsIndex.Divination);
+                        Text = Entity.Path.Replace("Metadata/Chests/LeagueHeist/HeistChest", "").Replace("Thug", "")
+                            .Replace("Science", "").Replace("Military", "").Replace("Robot", "")
+                            .Replace("Secondary", "").Replace("RewardRoom", "");
+
+                    //MainTexture.Color = Color.HotPink;
+                    break;
                 case ChestType.Synthesis:
                     Priority = IconPriority.Critical;
                     MainTexture.Size = settings.SizeChestIcon;
@@ -379,11 +395,12 @@ namespace IconsBuilder
             if (settings.LogDebugInformation && Show())
             {
                 Logger.Log.Information(
-                    $"Chest debug -> CType:{CType} Path: {Entity.Path} #\t\tText: {Text} #\t\tRender Name: {Entity.GetComponent<Render>().Name}");
+                    $"Chest debug -> CType:{CType} Path: {Entity.Path} #\t\tText: {Text} #\t\tRender Name: {Entity.GetComponent<Render>()?.Name ?? "Entity null"}");
 
-                if (Entity.GetComponent<Stats>()?.StatDictionary != null)
+                if (Entity.HasComponent<Stats>())
                 {
-                    foreach (var i in Entity.GetComponent<Stats>().StatDictionary)
+                    var stats = Entity.GetComponent<Stats>()?.StatDictionary ?? null;
+                    foreach (var i in stats)
                     {
                         Logger.Log.Information($"Stat: {i.Key} = {i.Value}");
                     }
@@ -391,7 +408,8 @@ namespace IconsBuilder
 
                 if (Entity.GetComponent<ObjectMagicProperties>() != null)
                 {
-                    foreach (var mod in Entity.GetComponent<ObjectMagicProperties>().Mods)
+                    var mods = Entity.GetComponent<ObjectMagicProperties>()?.Mods ?? null;
+                    foreach (var mod in mods)
                     {
                         Logger.Log.Information($"Mods: {mod}");
                     }
