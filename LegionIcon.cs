@@ -61,7 +61,10 @@ namespace IconsBuilder
                 Show = () =>
                 {
                     if (Entity.IsValid)
+                    {
+                        if (Entity.GetComponent<Life>() == null) return false;
                         return Entity.GetComponent<Life>().HPPercentage > 0.02;
+                    } 
 
                     return Entity.IsAlive;
                 };
@@ -73,8 +76,12 @@ namespace IconsBuilder
                 if (entity.HasComponent<ObjectMagicProperties>())
                 {
                     var objectMagicProperties = entity.GetComponent<ObjectMagicProperties>();
+                    if (objectMagicProperties == null)
+                        return;
 
                     var mods = objectMagicProperties.Mods;
+                    if (mods == null)
+                        return;
                     if (mods.Contains("MonsterConvertsOnDeath_")) Show = () => entity.IsValid && entity.IsAlive && entity.IsHostile;
 
                     modName = mods.FirstOrDefaultF(modIcons.ContainsKey);
@@ -135,7 +142,13 @@ namespace IconsBuilder
                     Show = () => Entity.IsAlive && frozenCheck.Value;
                 }
                 else
+                {
+                    var life = Entity.GetComponent<Life>();
+                    if (life == null)
+                        return;
                     Show = () => !Hidden() && Entity.GetComponent<Life>().HPPercentage > 0.02;
+                }
+                    
             }
         }
     }
