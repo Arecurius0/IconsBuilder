@@ -146,7 +146,7 @@ namespace IconsBuilder
                     var life = Entity.GetComponent<Life>();
                     if (life == null)
                         return;
-                    Show = () => !Hidden() && Entity.GetComponent<Life>().HPPercentage > 0.02;
+                    Show = () => !Hidden() && Entity.HasComponent<Life>() ? Entity.GetComponent<Life>().HPPercentage > 0.02 : false;
                 }
                     
             }
